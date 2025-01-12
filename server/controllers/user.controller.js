@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import User from '../models/user.model.js';
 
+import jwt from 'jsonwebtoken';
+
 // api for registering the user 
 export const registerUser = async (req, res) => {
 
@@ -11,6 +13,14 @@ export const registerUser = async (req, res) => {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
+        }
+
+        if (name.length < 5) {
+            return res.status(400).json({ message: 'Name must be at least 4 characters long' });
+        }
+
+        if (password.length < 5) {
+            return res.status(400).json({ message: 'Password must be at least 5 characters long' });
         }
 
         // Hash the password
@@ -58,7 +68,7 @@ export const loginUser = async (req, res) => {
         );
 
         // Respond with the JWT token
-        res.status(200).json({ message: 'Login successful', token });
+        res.status(200).json({ message: 'Login successful', token, });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
