@@ -15,7 +15,7 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        if (name.length < 5) {
+        if (name.length < 3) {
             return res.status(400).json({ message: 'Name must be at least 4 characters long' });
         }
 
@@ -68,7 +68,7 @@ export const loginUser = async (req, res) => {
         );
 
         // Respond with the JWT token
-        res.status(200).json({ message: 'Login successful', token, });
+        res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
